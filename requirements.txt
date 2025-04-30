@@ -1,0 +1,9 @@
+streamlit
+yfinance
+matplotlib
+pandas
+requests
+gtts
+python-dotenv
+fastmcp
+fpdf
