@@ -2,8 +2,7 @@
 
 ## Overview
 
-This project presents a real-time stock market SWOT analyzer tool that leverages the MCP (Model Context Protocol) to connect with Claude for data processing and natural language interaction. It also includes a PDF-to-voice generation module for improved accessibility and reporting in the web interface. The system collects and analyzes real-time financial data, provides actionable insights, and converts summarized reports into speech format. This approach aims to bridge the gap between financial data complexity and user accessibility.
-
+This project presents a real-time stock market SWOT analyzer tool that leverages the MCP (Model Context Protocol) to connect with Claude for data processing and natural language interaction. It also includes a PDF-to-voice generation module for improved accessibility and reporting in the web interface. The system collects and analyzes real-time financial data, provides actionable insights, and converts summarized reports into speech format. 
 ## Key Features
 
 *   **Real-Time Stock Data Retrieval:** Fetches current and historical stock market data using APIs like Alpha Vantage. Supports custom time-frame queries and multiple stock tickers.
