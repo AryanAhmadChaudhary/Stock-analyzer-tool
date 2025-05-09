@@ -9,5 +9,5 @@ This project presents a real-time stock market SWOT analyzer tool that leverages
 *   **Sentiment Analysis on Financial News:** Aggregates insights from news articles and financial headlines to gauge investor mood.
 *   **Automated SWOT Report Generation:** Generates Strengths, Weaknesses, Opportunities, and Threats for any stock. Uses financial data and sentiment cues to build an AI-curated strategic overview.
 *   **Voice Report Generation:** Converts textual reports into audio format using GTTS, enhancing accessibility.
-*   **MCP-Based AI Tool Integration:** Built as a modular AI tool using MCP (Model Context Protocol). Allows seamless integration with AI assistants like Claude, enabling natural language interaction with the stock analyzer.
+*   **MCP-Based AI Tool Integration:** Built as a modular AI tool using MCP (Model Context Protocol).
 *   **Claude AI Desktop App Integration:** Fully embedded into Claude AI's desktop app, allowing users to request and receive stock analysis directly within the LLM's interface. Enables conversational workflows with automated analysis responses.
