@@ -1,24 +1,28 @@
 import os
 import requests
+from groq import Groq
 from dotenv import load_dotenv
 from fpdf import FPDF
 import unicodedata
 
-# Load environment variables
-load_dotenv()
-EURI_API_KEY = os.getenv("EURI_API_KEY")
 
-# 🔹 Remove non-latin1 characters for FPDF compatibility
+load_dotenv()
+import os
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+
+
 def clean_text_for_pdf(text):
     def replace_non_latin1(c):
         try:
             c.encode('latin-1')
             return c
         except UnicodeEncodeError:
-            return ''  # Remove unsupported character
+            return '' 
     return ''.join(replace_non_latin1(c) for c in text)
 
-# 🔹 Generate SWOT report from EURI GPT-4.1 Nano
+
+
+
 def generate_swot_report(info, sentiment):
     prompt = f"""
     Create a SWOT analysis of the company with this context:
@@ -35,25 +39,17 @@ def generate_swot_report(info, sentiment):
     Threats:
     """
 
-    payload = {
-        "model": "gpt-4.1-nano",
-        "messages": [{"role": "user", "content": prompt}],
-        "max_tokens": 700,
-        "temperature": 0.7
-    }
-
-    headers = {
-        "Authorization": f"Bearer {EURI_API_KEY}",
-        "Content-Type": "application/json"
-    }
-
-    response = requests.post(
-        "https://api.euron.one/api/v1/euri/alpha/chat/completions",
-        json=payload,
-        headers=headers
+    # Call LLaMA 3.1 via Groq
+    completion = client.chat.completions.create(
+        model="llama-3.1-8b-instant",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.7,
+        max_tokens=700,
+        top_p=1,
+        stream=False
     )
 
-    return response.json()['choices'][0]['message']['content']
+    return completion.choices[0].message.content
 
 # 🔹 Save SWOT to PDF safely (without encoding errors)
 def save_swot_pdf(swot_text: str, filename="swot_report.pdf"):
