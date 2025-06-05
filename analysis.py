@@ -3,10 +3,12 @@ import pandas as pd
 import os
 import requests
 from dotenv import load_dotenv
+from groq import Groq
+
 
 load_dotenv()
-EURI_API_KEY = os.getenv("EURI_API_KEY")
-GEMINI_FLASH_MODEL = "gemini-2.0-flash-001"
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+
 ALPHA_VANTAGE_KEY = os.getenv("ALPHA_VANTAGE_KEY")
 
 def get_stock_data(ticker: str, period="6mo"):
@@ -17,7 +19,6 @@ def get_stock_data(ticker: str, period="6mo"):
     except Exception:
         hist, info = get_from_alpha_vantage(ticker)
     return hist, info
-
 def get_from_alpha_vantage(ticker: str):
     url = f"https://www.alphavantage.co/query"
     params = {
@@ -54,20 +55,26 @@ def calculate_indicators(df):
 
     return df
 
-def get_real_time_sentiment(ticker: str):
+
+
+def get_real_time_sentiment(ticker: str) -> str:
     prompt = f"Search the latest 3 news about {ticker}. Summarize sentiment and cite headlines."
-    payload = {
-        "model": GEMINI_FLASH_MODEL,
-        "messages": [{"role": "user", "content": prompt}],
-        "max_tokens": 700,
-        "temperature": 0.5
-    }
-    headers = {
-        "Authorization": f"Bearer {EURI_API_KEY}",
-        "Content-Type": "application/json"
-    }
-    response = requests.post("https://api.euron.one/api/v1/euri/alpha/chat/completions", headers=headers, json=payload)
-    return response.json()["choices"][0]["message"]["content"]
+
+    try:
+        completion = client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.5,
+            max_tokens=700,
+            top_p=1,
+            stream=False
+        )
+
+        return completion.choices[0].message.content
+
+    except Exception as e:
+        print("Error in sentiment generation:", e)
+        return "Sentiment data not available."
 
 def analyze_stock(ticker: str, period="6mo"):
     hist, info = get_stock_data(ticker, period)
