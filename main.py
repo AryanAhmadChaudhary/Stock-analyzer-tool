@@ -23,7 +23,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("<div class='title'>📈 Stock Market Analyzer & Reporter</div>", unsafe_allow_html=True)
+st.markdown("<div class='title'>Stock Market Analyzer & Reporter</div>", unsafe_allow_html=True)
 st.markdown("<div class='subtitle'>Analyze Indian stocks with technical indicators, LLM-based SWOT, and voice reports</div>", unsafe_allow_html=True)
 st.markdown("---")
 
@@ -49,15 +49,15 @@ stock_options = {
     "Hindustan Unilever": "HINDUNILVR.NS"
 }
 
-selected_company = st.selectbox("📌 Select a Company", options=list(stock_options.keys()))
+selected_company = st.selectbox("Select a Company", options=list(stock_options.keys()))
 ticker = stock_options[selected_company]
-period = st.radio("📅 Select Time Period", ["1mo", "3mo", "6mo", "1y", "2y"], horizontal=True)
+period = st.radio("Select Time Period", ["1mo", "3mo", "6mo", "1y", "2y"], horizontal=True)
 
 # -------------------------------
 # Run Analysis Button
 # -------------------------------
-if st.button("🚀 Run Full Analysis"):
-    with st.spinner("⏳ Fetching data and running analysis..."):
+if st.button("Run Analysis"):
+    with st.spinner("Fetching data and running analysis..."):
         hist, info, sentiment = analyze_stock(ticker, period)
         swot = generate_swot_report(info, sentiment)
         pdf_file = save_swot_pdf(swot)
@@ -85,7 +85,7 @@ if st.session_state.analysis_done:
     tab1, tab2, tab3, tab4 = st.tabs(["Price & Indicators", "Sentiment", "SWOT + PDF", "Voice Report"])
 
     with tab1:
-        st.subheader("📈 Stock Price + Indicators")
+        st.subheader("Stock Price + Indicators")
         fig, ax = plt.subplots(3, figsize=(12, 9))
         ax[0].plot(hist['Close'], label="Close", color='blue')
         ax[0].plot(hist['MA20'], label="MA20", color='orange')
@@ -116,8 +116,9 @@ if st.session_state.analysis_done:
             st.download_button("Download SWOT PDF", data=f, file_name=pdf_file)
 
     with tab4:
-        st.subheader("🔊 Voice Report (Text-to-Speech)")
+        st.subheader("Voice Report (Text-to-Speech)")
         st.audio(audio_file)
 
 else:
     st.markdown("Choose a stock and run the analysis to see results.")
+
