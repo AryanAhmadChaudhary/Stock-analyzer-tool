@@ -32,6 +32,7 @@ def get_from_alpha_vantage(ticker: str):
     df = pd.DataFrame.from_dict(ts, orient="index").sort_index()
     df = df.rename(columns={"5. adjusted close": "Close"})
     df["Close"] = df["Close"].astype(float)
+
     df.index = pd.to_datetime(df.index)
     return df.tail(120), {"shortName": ticker, "sector": "N/A", "marketCap": "N/A", "longBusinessSummary": "N/A"}
 
@@ -62,7 +63,7 @@ def get_real_time_sentiment(ticker: str) -> str:
 
     try:
         completion = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
+            model="groq/compound",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.5,
             max_tokens=700,
